@@ -1,0 +1,94 @@
+/* ─── Typography ─── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Reset ─── */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    @apply bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-zinc-100 dark:bg-zinc-950; }
+  ::-webkit-scrollbar-thumb { @apply bg-zinc-300 dark:bg-zinc-700 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-zinc-400 dark:bg-zinc-600; }
+
+  /* Form elements inherit color scheme */
+  input, select, textarea {
+    color-scheme: inherit;
+  }
+}
+
+/* ─── Component Layer ─── */
+@layer components {
+  /* Glass Card — adapts to light and dark */
+  .glass-card {
+    @apply bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border border-zinc-200 dark:border-zinc-800 rounded-2xl;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* Glass Overlay — modals, drawers */
+  .glass-overlay {
+    @apply bg-white/90 dark:bg-zinc-950/90 backdrop-blur-2xl;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: linear-gradient(135deg, #336dff 0%, #8e5cf7 50%, #ff5722 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Seat map */
+  .seat {
+    @apply w-8 h-8 rounded-md cursor-pointer transition-all duration-200 text-xs font-bold flex items-center justify-center;
+  }
+  .seat-available {
+    @apply bg-zinc-100 dark:bg-zinc-800 hover:bg-blue-500 text-zinc-500 dark:text-zinc-400 hover:text-white;
+  }
+  .seat-selected {
+    @apply bg-blue-500 text-white shadow-[0_0_12px_rgba(51,109,255,0.4)] scale-110;
+  }
+  .seat-disabled {
+    @apply bg-zinc-50 dark:bg-zinc-900 text-zinc-300 dark:text-zinc-700 cursor-not-allowed opacity-40;
+  }
+}
+
+/* ─── Utilities ─── */
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
