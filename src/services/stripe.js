@@ -1,12 +1,15 @@
 // ─── Stripe Payment Service ───
 // Client-side Stripe integration using Stripe Elements.
 // Only the PUBLISHABLE KEY is used here (frontend).
-// The SECRET KEY is used on the backend server (server/index.js).
+// The SECRET KEY is used on the backend server (Vercel Serverless Functions in /api).
 
 import { loadStripe } from '@stripe/stripe-js';
 
 const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
-const STRIPE_SERVER_URL = 'http://localhost:4242';
+
+// In production (Vercel), requests to /api/ are automatically routed to serverless functions.
+// In development, Vite will proxy /api/ requests to the local Express server or Vercel CLI.
+const API_BASE_URL = '/api';
 
 let stripePromise = null;
 
@@ -30,7 +33,7 @@ export const getStripe = () => {
  * @returns {Promise<{ clientSecret: string, paymentIntentId: string }>}
  */
 export async function createPaymentIntent(amount, metadata = {}) {
-  const response = await fetch(`${STRIPE_SERVER_URL}/create-payment-intent`, {
+  const response = await fetch(`${API_BASE_URL}/create-payment-intent`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -53,6 +56,6 @@ export async function createPaymentIntent(amount, metadata = {}) {
  * @param {string} paymentIntentId
  */
 export async function verifyPayment(paymentIntentId) {
-  const response = await fetch(`${STRIPE_SERVER_URL}/verify-payment/${paymentIntentId}`);
+  const response = await fetch(`${API_BASE_URL}/verify-payment?id=${paymentIntentId}`);
   return response.json();
 }
