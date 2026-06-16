@@ -1,7 +1,5 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
 export default async function handler(req, res) {
   // Add CORS headers for local development testing (Vite proxy usually handles this, but good practice)
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -21,6 +19,12 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({ error: 'Stripe secret key is not configured on the Vercel server.' });
+  }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   try {
     const { amount, currency = 'inr', metadata = {} } = req.body;

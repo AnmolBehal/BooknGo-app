@@ -59,3 +59,6 @@ coverage/
 *.cert
 .cache/
 .parcel-cache/
+
+.vercel
+.env*
